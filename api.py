@@ -1,36 +1,49 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
-from flask import Flask, abort, request, jsonify
-from flask_restful import Resource, Api
-import pandas as pd
-import datetime
+from flask import Flask, jsonify
+from flask_restful import Resource, Api, reqparse
 
 app = Flask(__name__)
+app.config["BUNDLE_ERRORS"] = True
 api = Api(app)
 
-tasks = pd.read_csv('pred_results.csv')
+class Trending(Resource):
 
-class Pred_Result(Resource):
-    def get(self, key):
-        result = {'issue': str(key) , 'predicted_resolution_date': str( tasks[tasks['_id'] == key ].resovle_date.values[0]) }
+    def __init__(self):
+        self.parser = reqparse.RequestParser()
+        self.parser.add_argument('topic', type=str,  required=True , location='args')
+
+    def get(self):
+        data = self.parser.parse_args()
+        user_topic = data.get('topic')
+
+        try:
+            result = {  
+                        'Hot Topic': str( collection.find({},{ "word": 1, 'count': 1 })[0]['word']), \
+                        'Hot Topic Trends' : str( collection.find({},{ "word": 1, 'count': 1 })[0]['count']), \
+                        'User Topic': str(user_topic)  ,\
+                        'User Topic Trends': str( collection.find({"word": user_topic},{ "word": 1, 'count': 1 })[0]['count']) 
+                        }
+        except IndexError:
+            result = {  
+                        'Hot Topic': str( collection.find({},{ "word": 1, 'count': 1 })[0]['word']), \
+                        'Hot Topic Trends' : str( collection.find({},{ "word": 1, 'count': 1 })[0]['count']), \
+                        'Message': 'The topic you selected was not shown up in the past 7 days'
+                        }            
         return jsonify(result)
-        
-
-class Plan(Resource):
-    def get(self, date):
-        
-        now = '2017-09-01'#datetime.datetime.now()
-        
-        result = {'now': str(pd.to_datetime(now).tz_localize(tz='UTC')) , \
-                  'issues': tasks[ (pd.to_datetime(tasks['resovle_date']) >  pd.to_datetime(now).tz_localize(tz='UTC') ) &\
-                                  (pd.to_datetime(tasks['resovle_date']) <  pd.to_datetime(date).tz_localize(tz='UTC') ) ][['_id','resovle_date']].to_dict(orient='records') }
-        return jsonify(result)
-        
 
 
-api.add_resource(Pred_Result, '/api/issue/<key>/resolve-prediction/') 
-api.add_resource(Plan, '/api/release/<date>/resolved-since-now') 
+api.add_resource(Trending, '/api/trends', endpoint = 'trends') 
+
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8383, debug=True)
+    from pymongo import MongoClient
+    try:
+        client = MongoClient('mongo', 27017)
+    except:
+        client = MongoClient('localhost', 27017)
+
+    db = client['Twitter']
+    collection = db['trending']
+
+    app.run(host="0.0.0.0", port=8383, debug=False)
