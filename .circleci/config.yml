@@ -43,11 +43,11 @@ jobs:
             sudo mv ~/docker-compose /usr/local/bin/docker-compose
       - run:
           name: Build docker images
-          command: |
-            docker build -t spark:3.3 -f ./Docker/Spark/Dockerfile .
-            docker build -t spark-worker:3.3 -f ./Docker/Spark-worker/Dockerfile .
-            docker build -t python-runner -f ./Docker/Python-runner/Dockerfile .
-            docker build -t pyspark-runner -f ./Docker/pySpark-runner/Dockerfile .
+          command:   docker-compose build # |
+            # docker build -t spark:3.3 -f ./Docker/Spark/Dockerfile .
+            # docker build -t spark-worker:3.3 -f ./Docker/Spark-worker/Dockerfile .
+            # docker build -t python-runner -f ./Docker/Python-runner/Dockerfile .
+            # docker build -t pyspark-runner -f ./Docker/pySpark-runner/Dockerfile .
       - run:
           name: services up
           command: docker-compose up -d

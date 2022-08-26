@@ -2,7 +2,9 @@ version: '2'
 services:
 
   spark-master:
-    #build: ./Spark/.
+    build: 
+      context: .
+      dockerfile: ./Docker/Spark/Dockerfile
     image: spark:3.3
     container_name: spark-master
     hostname: spark-master
@@ -19,7 +21,9 @@ services:
     tty: true
 
   spark-worker:
-    #build: ./Spark-worker/.
+    build: 
+      context: .
+      dockerfile: ./Docker/Spark-worker/Dockerfile
     image: spark-worker:3.3
     depends_on:
       - spark-master
@@ -55,6 +59,9 @@ services:
       - 27017:27017
   
   etl-runner:
+    build: 
+      context: .
+      dockerfile: ./Docker/Python-runner/Dockerfile
     image: python-runner
     container_name: etl-runner
     volumes: 
@@ -66,6 +73,9 @@ services:
 
 
   pyspark-runner:
+    build: 
+      context: .
+      dockerfile: ./Docker/pySpark-runner/Dockerfile
     image: pyspark-runner
     container_name: pyspark-runner
     volumes: 
@@ -78,6 +88,9 @@ services:
 
 
   api-services:
+    build: 
+      context: .
+      dockerfile: ./Docker/Python-runner/Dockerfile
     image: python-runner
     container_name: api-services
     volumes: 
