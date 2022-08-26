@@ -43,13 +43,13 @@ services:
       replicas: 4
 
 
-  spark-notebook:
-    image: apache/zeppelin:0.10.1
-    container_name: zeppelin-notebook
-    depends_on:
-      - spark-master
-    ports:
-      - 9999:8080
+  # spark-notebook:
+  #   image: apache/zeppelin:0.10.1
+  #   container_name: zeppelin-notebook
+  #   depends_on:
+  #     - spark-master
+  #   ports:
+  #     - 9999:8080
 
   mongo:
     image: mongo
