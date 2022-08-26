@@ -22,7 +22,7 @@ jobs:
     # Change the version below to your required version of python
     docker:
       - image: cimg/base:2021.04
-    resource_class: xlarge
+    resource_class: large
 
     # Checkout the code as the first step. This is a dedicated CircleCI step.
     # The python orb's install-packages step will install the dependencies from a Pipfile via Pipenv by default.

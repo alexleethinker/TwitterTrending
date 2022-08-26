@@ -46,16 +46,16 @@ If you have any questions or want clarification on the requirements, please emai
 
 
 
- docker build -t spark:3.3 -f ./Docker/Spark/Dockerfile .
- docker build -t spark-worker:3.3 -f ./Docker/Spark-worker/Dockerfile .
- docker build -t python-runner -f ./Docker/Python-runner/Dockerfile .
-
+docker build -t spark:3.3 -f ./Docker/Spark/Dockerfile .
+docker build -t spark-worker:3.3 -f ./Docker/Spark-worker/Dockerfile .
+docker build -t python-runner -f ./Docker/Python-runner/Dockerfile .
+docker build -t pyspark-runner -f ./Docker/pySpark-runner/Dockerfile .
 
 
 docker-compose run --rm etl-runner python etl.py --fileName=Twitter-sample.json
 
 
- ! pip install pyspark
+! pip install pyspark
 from pyspark.sql import SparkSession
 from pyspark.sql import Row,SQLContext
 import sys

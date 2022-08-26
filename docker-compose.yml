@@ -104,5 +104,5 @@ services:
     ports:
       - 8383:8383
 
-networks:
-  connector:
+# networks:
+#   connector:

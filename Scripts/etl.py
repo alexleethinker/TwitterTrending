@@ -33,9 +33,16 @@ if __name__ == "__main__":
     parser.add_argument('--fileName', type = str, default='sample', help = 'The name of the file to load.')
     args = parser.parse_args()
 
+
+    import os
+    script_path = os.path.abspath(__file__)
+    parent_path = os.path.dirname(script_path)
+    project_path = os.path.dirname(parent_path)
+
     fileName = args.fileName.replace('.json','')
-    filePath = './TwitterData/' + fileName + '.json'
-    
+    filePath = 'TwitterData/' + fileName + '.json'
+    filePath = os.path.join(project_path, filePath)
+
     from pymongo import MongoClient
     
     try:
