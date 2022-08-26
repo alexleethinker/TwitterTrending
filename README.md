@@ -1,6 +1,8 @@
 # TwitterTrending tech assignment
 
-A cloud hosted api service as example: `http://143.177.112.110:8383/api/trends?source=twitter-sample&&topic=de`
+A cloud hosted api service as example: 
+
+`http://143.177.112.110:8383/api/trends?source=twitter-sample&&topic=love`
 
 
 Before cloning the project, make sure you have latest Docker Engine and Docker-Compose installed on your machine. The code should be working on Windows, Linux and MacOS environments.
