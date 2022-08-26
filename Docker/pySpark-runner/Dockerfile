@@ -1,6 +1,6 @@
 FROM python:3.9.7
 
-RUN pip --no-cache-dir install --upgrade pyspark &&\
+RUN pip --no-cache-dir install --upgrade pyspark nltk &&\
     apt-get -y update && \
     apt-get install --no-install-recommends -y openjdk-11-jre-headless ca-certificates-java unzip wget && \
     apt-get -y autoclean && \

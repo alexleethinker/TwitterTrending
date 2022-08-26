@@ -42,7 +42,6 @@ services:
       mode: replicated
       replicas: 4
 
-
   # spark-notebook:
   #   image: jupyter/pyspark-notebook
   #   container_name: pyspark-notebook

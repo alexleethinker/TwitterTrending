@@ -1,5 +1,30 @@
 from pyspark.sql import SparkSession
 import pyspark.sql.functions as f
+from pyspark.sql.functions import regexp_replace, trim, col, lower, length
+import nltk
+nltk.download('stopwords')
+
+
+def clean_text(dataframe):
+    dataframe = dataframe.select(trim(regexp_replace(col('text'),'http\S+',' ')).alias("text")) # remove urls
+    dataframe = dataframe.select( trim(regexp_replace(col('text'),'\\p{Punct}',' ')).alias("text"))  #remove punct
+    dataframe = dataframe.select(trim(regexp_replace(col('text'),'[0-9]',' ')).alias("text")) #rmeove numbers
+    dataframe = dataframe.select(trim(regexp_replace(col('text'),'[^a-zA-Z]',' ')).alias("text")) # remove all non-alpha numeric characters
+    dataframe = dataframe.select(lower(col('text')).alias("text")) # change to lower case
+    return dataframe
+
+
+def get_stopwords():
+    from nltk.corpus import stopwords
+
+    defined_stopwords = ['echt','haha','gaan','gaat','even']
+    words_nl = stopwords.words('dutch')
+    words_en = stopwords.words('english')
+    words_es = stopwords.words('spanish')
+    words = words_nl + words_en + words_es + defined_stopwords
+
+    return words
+
 
 def SparkTrends(fileName, spark_master, mongo_uri):
 
@@ -16,21 +41,30 @@ def SparkTrends(fileName, spark_master, mongo_uri):
 
     sample_df = spark.read.format("com.mongodb.spark.sql.DefaultSource").load()
 
+
+
     # extract ['created_at','text'] columns from original dataframe for further analysis
     if fileName.lower() == 'sample':
-        text_df = sample_df.select("created_at","text").na.drop()
+        text_df = sample_df.select("text").na.drop()
+        text_df = clean_text(text_df)
     elif fileName.lower() == 'twitter-sample':
-        from pyspark.sql.functions import col
-        text_df = sample_df.select(col("interaction.created_at"), col("interaction.content")).na.drop().withColumnRenamed("content","text")
+        text_df = sample_df.select( col("interaction.content").alias("text")).na.drop()
+        text_df = clean_text(text_df)
     else:
         print('file name not supported!')
 
+
+
     # do word frequency count on the text field
     # use simplest stop word ' '
+    words = get_stopwords()
     trending = text_df.withColumn('word', f.explode(f.split(f.col('text'), ' ')))\
         .groupBy('word')\
         .count()\
         .sort('count', ascending=False)
+
+    trending = trending.filter(~trending.word.isin(words))\
+                       .filter(length(trending.word) > 3)    # length of words > 3 and word is not in stopword list
         
     # write results into a new collection in mongodb
     mongo_write = mongo_uri + "/Twitter.trends-" + fileName
@@ -59,3 +93,4 @@ if __name__ == "__main__":
     mongo_uri = "mongodb://mongo:27017"  or os.environ.get('MONGO_HOST')
     
     SparkTrends(fileName, spark_master, mongo_uri)
+
