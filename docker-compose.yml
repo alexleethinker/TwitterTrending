@@ -1,4 +1,4 @@
-version: '2' 
+version: '3.9' 
 services:
 
   spark-master:
@@ -44,12 +44,13 @@ services:
 
 
   # spark-notebook:
-  #   image: apache/zeppelin:0.10.1
-  #   container_name: zeppelin-notebook
+  #   image: jupyter/pyspark-notebook
+  #   container_name: pyspark-notebook
   #   depends_on:
   #     - spark-master
+  #   command: jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser --allow-root
   #   ports:
-  #     - 9999:8080
+  #     - 9999:8888
 
   mongo:
     image: mongo
@@ -65,8 +66,8 @@ services:
     image: python-runner
     container_name: etl-runner
     volumes: 
-      - ./:/etc/work
-    working_dir: /etc/work
+      - ./:/etc/project
+    working_dir: /etc/project/Scripts
     command: python etl.py --fileName=sample.json
     depends_on:
       - mongo
@@ -78,13 +79,17 @@ services:
       dockerfile: ./Docker/pySpark-runner/Dockerfile
     image: pyspark-runner
     container_name: pyspark-runner
+    environment:
+      - SPARK_MASTER=spark://spark-master:7077
+      - MONGO_HOST=mongodb://mongo:27017
     volumes: 
-      - ./:/etc/work
-    working_dir: /etc/work
+      - ./:/etc/project
+    working_dir: /etc/project/Scripts
     command: python spark_trending.py 
     depends_on:
       - mongo
       - etl-runner
+            #wait till etl-runner finished
 
 
   api-services:
@@ -94,8 +99,8 @@ services:
     image: python-runner
     container_name: api-services
     volumes: 
-      - ./:/etc/work
-    working_dir: /etc/work
+      - ./:/etc/project
+    working_dir: /etc/project/Scripts
     command: python api.py 
     depends_on:
       - mongo

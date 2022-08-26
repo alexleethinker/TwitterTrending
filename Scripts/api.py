@@ -11,11 +11,15 @@ class Trending(Resource):
 
     def __init__(self):
         self.parser = reqparse.RequestParser()
+        self.parser.add_argument('source', type=str,  required=True , location='args')
         self.parser.add_argument('topic', type=str,  required=True , location='args')
 
     def get(self):
         data = self.parser.parse_args()
+        source = data.get('source')
         user_topic = data.get('topic')
+
+        collection = db['trends-' + str(source)]
 
         try:
             result = {  
@@ -44,6 +48,5 @@ if __name__ == "__main__":
         client = MongoClient('localhost', 27017)
 
     db = client['Twitter']
-    collection = db['trending']
-
+    
     app.run(host="0.0.0.0", port=8383, debug=False)
