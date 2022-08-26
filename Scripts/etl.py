@@ -51,7 +51,7 @@ if __name__ == "__main__":
     db = client['Twitter']
     collection = db[fileName]
 
-    collection.delete_many()   # clear all existing documents before writing
+    collection.delete_many({})   # clear all existing documents before writing
     json_insert(filePath, collection)
     
     client.close()
