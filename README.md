@@ -20,10 +20,12 @@ Before cloning the project, make sure you have latest Docker Engine and Docker-C
         - open `http://localhost:8080/` to check spark status
 
     - API `GET http://127.0.0.1/:8383/api/trends?source=value&&topic=value`
-        - ```source``` should be either ```sample``` or ```twitter-sample'```
+        - ```source``` should be either ```sample``` or ```twitter-sample```
         - ```topic``` can be any single word
    
-   
+
+
+
 - Further, let's load the big dataset ```twitter-sample.json``` and calculate trends.
     ```
     # data loading 
