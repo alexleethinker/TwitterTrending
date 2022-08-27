@@ -7,8 +7,8 @@ nltk.download('stopwords')
 
 def clean_text(dataframe):
     dataframe = dataframe.select(trim(regexp_replace(col('text'),'http\S+',' ')).alias("text")) # remove urls
-    dataframe = dataframe.select( trim(regexp_replace(col('text'),'\\p{Punct}',' ')).alias("text"))  #remove punct
-    dataframe = dataframe.select(trim(regexp_replace(col('text'),'[0-9]',' ')).alias("text")) #rmeove numbers
+    dataframe = dataframe.select(trim(regexp_replace(col('text'),'\\p{Punct}',' ')).alias("text"))  #remove punct
+    dataframe = dataframe.select(trim(regexp_replace(col('text'),'[0-9]',' ')).alias("text")) #remove numbers
     dataframe = dataframe.select(trim(regexp_replace(col('text'),'[^a-zA-Z]',' ')).alias("text")) # remove all non-alpha numeric characters
     dataframe = dataframe.select(lower(col('text')).alias("text")) # change to lower case
     return dataframe
@@ -57,12 +57,12 @@ def SparkTrends(fileName, spark_master, mongo_uri):
 
     # do word frequency count on the text field
     # use simplest stop word ' '
-    words = get_stopwords()
     trending = text_df.withColumn('word', f.explode(f.split(f.col('text'), ' ')))\
         .groupBy('word')\
         .count()\
         .sort('count', ascending=False)
 
+    words = get_stopwords()
     trending = trending.filter(~trending.word.isin(words))\
                        .filter(length(trending.word) > 3)    # length of words > 3 and word is not in stopword list
         

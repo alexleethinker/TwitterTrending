@@ -21,17 +21,25 @@ class Trending(Resource):
 
         collection = db['trends-' + str(source)]
 
+
+        hot_topic = str( collection.find({},{ "word": 1, 'count': 1 }).sort("count", -1)[0]['word'])
+        hot_topic_trends = str( collection.find({},{ "word": 1, 'count': 1 }).sort("count", -1)[0]['count'])
+
+        user_topic = str(user_topic)
+        user_topic_trends = str( collection.find({"word": user_topic},{ "word": 1, 'count': 1 })[0]['count']) 
+
+
         try:
             result = {  
-                        'Hot Topic': str( collection.find({},{ "word": 1, 'count': 1 }).sort("count", -1)[0]['word']), \
-                        'Hot Topic Trends' : str( collection.find({},{ "word": 1, 'count': 1 }).sort("count", -1)[0]['count']), \
-                        'User Topic': str(user_topic)  ,\
-                        'User Topic Trends': str( collection.find({"word": user_topic},{ "word": 1, 'count': 1 })[0]['count']) 
+                        'Hot Topic': hot_topic , \
+                        'Hot Topic Trends' : hot_topic_trends, \
+                        'User Topic':  user_topic ,\
+                        'User Topic Trends': user_topic_trends 
                         }
         except IndexError:
             result = {  
-                        'Hot Topic': str( collection.find({},{ "word": 1, 'count': 1 }).sort("count", -1)[0]['word']), \
-                        'Hot Topic Trends' : str( collection.find({},{ "word": 1, 'count': 1 }).sort("count", -1)[0]['count']), \
+                        'Hot Topic': hot_topic, \
+                        'Hot Topic Trends' : hot_topic_trends, \
                         'Message': 'The topic you selected was not shown up in the past 7 days'
                         }            
         return jsonify(result)
