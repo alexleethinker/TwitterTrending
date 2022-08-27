@@ -21,9 +21,9 @@ jobs:
             curl -L "https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o ~/docker-compose
             chmod +x ~/docker-compose
             sudo mv ~/docker-compose /usr/local/bin/docker-compose
-      # - run:
-      #     name: Build docker images
-      #     command:   docker-compose build 
+      - run:
+          name: Build docker images
+          command:   docker-compose build 
             # |
             # docker build -t spark:3.3 -f ./Docker/Spark/Dockerfile .
             # docker build -t spark-worker:3.3 -f ./Docker/Spark-worker/Dockerfile .
