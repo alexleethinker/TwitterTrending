@@ -53,7 +53,7 @@ services:
 
   mongo:
     image: mongo
-    container_name: mongo1
+    container_name: mongo
     restart: always
     ports:
       - 27017:27017
@@ -68,8 +68,6 @@ services:
       - ./:/etc/project
     working_dir: /etc/project/Scripts
     command: python etl.py --fileName=sample.json
-    depends_on:
-      - mongo
 
 
   pyspark-runner:
@@ -85,10 +83,7 @@ services:
       - ./:/etc/project
     working_dir: /etc/project/Scripts
     command: python spark_trending.py --fileName=sample.json
-    depends_on:
-      - mongo
-      - etl-runner
-            #wait till etl-runner finished
+
 
 
   api-services:
@@ -103,8 +98,6 @@ services:
     command: python api.py 
     depends_on:
       - mongo
-      - etl-runner
-      - pyspark-runner
     ports:
       - 8383:8383
 
