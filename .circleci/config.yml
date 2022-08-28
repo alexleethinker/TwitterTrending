@@ -25,6 +25,9 @@ jobs:
       #     name: Clone repository
       #     command: git clone https://github.com/alexleethinker/TwitterTrending.git && cd TwitterTrending
       - run:
+          name: ETL test
+          command:  docker-compose run --rm --no-deps etl-runner python etl.py --fileName=sample.json
+      - run:
           name: Build docker images
           command: docker-compose build 
             # |
