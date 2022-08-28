@@ -24,24 +24,26 @@ class Trending(Resource):
 
         hot_topic = str( collection.find({},{ "word": 1, 'count': 1 }).sort("count", -1)[0]['word'])
         hot_topic_trends = str( collection.find({},{ "word": 1, 'count': 1 }).sort("count", -1)[0]['count'])
-
-        user_topic = str(user_topic)
-        user_topic_trends = str( collection.find({"word": user_topic},{ "word": 1, 'count': 1 })[0]['count']) 
-
-
+        
         try:
+            user_topic = str(user_topic)
+            user_topic_trends = str( collection.find({"word": user_topic},{ "word": 1, 'count': 1 })[0]['count']) 
             result = {  
-                        'Hot Topic': hot_topic , \
-                        'Hot Topic Trends' : hot_topic_trends, \
-                        'User Topic':  user_topic ,\
-                        'User Topic Trends': user_topic_trends 
-                        }
+                    'Hot Topic': hot_topic , \
+                    'Hot Topic Trends' : hot_topic_trends, \
+                    'User Topic':  user_topic ,\
+                    'User Topic Trends': user_topic_trends 
+                    }
+
         except IndexError:
             result = {  
                         'Hot Topic': hot_topic, \
                         'Hot Topic Trends' : hot_topic_trends, \
                         'Message': 'The topic you selected was not shown up in the past 7 days'
-                        }            
+                        } 
+
+
+           
         return jsonify(result)
 
 
