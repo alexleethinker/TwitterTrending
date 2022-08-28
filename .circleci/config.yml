@@ -26,7 +26,7 @@ jobs:
       #     command: git clone https://github.com/alexleethinker/TwitterTrending.git && cd TwitterTrending
       - run:
           name: Build docker images
-          command: ls &&  docker-compose build 
+          command: docker-compose build 
             # |
             # docker build -t spark:3.3 -f ./Docker/Spark/Dockerfile .
             # docker build -t spark-worker:3.3 -f ./Docker/Spark-worker/Dockerfile .

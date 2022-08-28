@@ -65,8 +65,8 @@ services:
     image: python-runner
     container_name: etl-runner
     volumes: 
-      - ./:/etc/project
-    working_dir: /etc/project/Scripts
+      - ./:~/project
+    working_dir: ~/project/Scripts
     command: python etl.py --fileName=sample.json
 
 
@@ -80,8 +80,8 @@ services:
       - SPARK_MASTER=spark://spark-master:7077
       - MONGO_HOST=mongodb://mongo:27017
     volumes: 
-      - ./:/etc/project
-    working_dir: /etc/project/Scripts
+      - ./:~/project
+    working_dir: ~/project/Scripts
     command: python spark_trending.py --fileName=sample.json
 
 
@@ -93,8 +93,8 @@ services:
     image: python-runner
     container_name: api-services
     volumes: 
-      - ./:/etc/project
-    working_dir: /etc/project/Scripts
+      - ./:~/project
+    working_dir: ~/project/Scripts
     command: python api.py 
     depends_on:
       - mongo
