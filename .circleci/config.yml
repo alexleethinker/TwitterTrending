@@ -22,6 +22,9 @@ jobs:
             chmod +x ~/docker-compose
             sudo mv ~/docker-compose /usr/local/bin/docker-compose
       - run:
+          name: Clone repository
+          command: git clone https://github.com/alexleethinker/TwitterTrending.git && cd TwitterTrending
+      - run:
           name: Build docker images
           command:   docker-compose build 
             # |
