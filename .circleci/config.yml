@@ -31,7 +31,14 @@ jobs:
             # docker build -t pyspark-runner -f ./Docker/pySpark-runner/Dockerfile .
       - run:
           name: Services up
-          command: docker-compose up -d
+          command: docker-compose up spark-master spark-worker mongo api-services -d
+      - run:
+          name: ETL
+          command: docker-compose run --rm --no-deps etl-runner python etl.py --fileName=sample.json
+      - run:
+          name: pySpark
+          command: docker-compose run --rm --no-deps pyspark-runner python spark_trending.py --fileName=sample
+           
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
