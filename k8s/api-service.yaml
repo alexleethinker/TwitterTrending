@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    io.kompose.service: api-services
+  name: api-services
+spec:
+  ports:
+    - name: "8383"
+      port: 8383
+      targetPort: 8383
+  selector:
+    io.kompose.service: api-services
+  type: LoadBalancer
+status:
+  loadBalancer: {}

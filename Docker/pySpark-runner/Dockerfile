@@ -21,6 +21,6 @@ RUN cd / \
     && tar -xvzf spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz \
     && rm spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz  
 
-EXPOSE 8080 7077 6066
+ADD ./ /home
 
-CMD /spark-3.3.0-bin-hadoop3/sbin/start-master.sh && bash
+WORKDIR /home

@@ -21,7 +21,6 @@ class Trending(Resource):
 
         collection = db['trends-' + str(source)]
 
-
         hot_topic = str( collection.find({},{ "word": 1, 'count': 1 }).sort("count", -1)[0]['word'])
         hot_topic_trends = str( collection.find({},{ "word": 1, 'count': 1 }).sort("count", -1)[0]['count'])
         

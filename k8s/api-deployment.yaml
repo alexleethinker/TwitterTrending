@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    io.kompose.service: api-services
+  name: api-services
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: api-services
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        io.kompose.service: api-services
+    spec:
+      containers:
+        - args:
+            - python
+            - api.py
+          image: python-runner
+          imagePullPolicy: IfNotPresent
+          name: api-services
+          ports:
+            - containerPort: 8383
+          resources: {}
+          workingDir: /home/Scripts
+      restartPolicy: Always
+
+status: {}

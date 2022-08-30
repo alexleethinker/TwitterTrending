@@ -1,0 +1,16 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: pyspark-runner
+spec:
+  template:
+    spec:
+      containers:
+      - name: pyspark-runner
+        image: pyspark-runner
+        imagePullPolicy: IfNotPresent  # important needed when testing on local env
+        command: ["python",  "spark_trending.py", "--fileName=sample.json"]
+        resources: {}
+        workingDir: /home/Scripts
+      restartPolicy: Never
+status: {}

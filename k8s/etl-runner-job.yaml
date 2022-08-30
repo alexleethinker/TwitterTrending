@@ -1,0 +1,16 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: etl-runner
+spec:
+  template:
+    spec:
+      containers:
+      - name: etl-runner
+        image: python-runner
+        imagePullPolicy: IfNotPresent  # important needed when testing on local env
+        command: ["python",  "etl.py", "--fileName=sample.json"]
+        resources: {}
+        workingDir: /home/Scripts
+      restartPolicy: Never
+status: {}
