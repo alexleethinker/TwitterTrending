@@ -5,7 +5,7 @@ metadata:
     io.kompose.service: spark-worker
   name: spark-worker
 spec:
-  replicas: 1
+  replicas: 4
   selector:
     matchLabels:
       io.kompose.service: spark-worker
@@ -32,9 +32,15 @@ spec:
             - name: SPARK_WORKER_CORES
               value: "1"
             - name: SPARK_WORKER_MEMORY
-              value: 2G
-            - name: SPARK_DRIVER_HOST
-              value: "0.0.0.0"
+              value: 1G
+            # - name: SPARK_EXECUTOR_CORES
+            #   value: "1"
+            # - name: SPARK_EXECUTOR_MEMORY
+            #   value: 1G
+            # - name: SPARK_EXECUTOR_INSTANCE
+            #   value: "1"   
+            # - name: SPARK_DRIVER_CORES
+            #   value: "1"              
           image: spark-worker:3.3
           ports:
             - containerPort: 8081
@@ -44,3 +50,6 @@ spec:
           tty: true
       restartPolicy: Always
 status: {}
+
+
+# ExternalShuffleBlockResolver: Executor is not registered

@@ -54,7 +54,7 @@ Before cloning the project, make sure you have latest Docker Engine and Docker-C
 - maturing CI/CD workflows
 - adding scripts and service logs
 - HA Spark Cluster with zookeeper
-- immigrating to K8s
+- immigrating to K8s (POD stateless and pod staring order)
 - mongodb data persistence
 - mongodb encriptions
 - HA mongodb clusters

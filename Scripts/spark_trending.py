@@ -30,10 +30,15 @@ def SparkTrends(fileName, spark_master, mongo_uri):
 
     mongo_read = mongo_uri + "/Twitter." + fileName
 
+    import socket
+
+    driver_host = socket.gethostbyname(socket.gethostname()) # setting driver host is important in k8s mode, ortherwise excutors cannot find diver host
+
     spark = SparkSession \
         .builder \
         .master(spark_master)\
         .appName("TwitterTrendingApp") \
+        .config("spark.driver.host", driver_host) \
         .config("spark.mongodb.input.uri", mongo_read) \
         .config("spark.mongodb.output.uri", mongo_read) \
         .config('spark.jars.packages', 'org.mongodb.spark:mongo-spark-connector_2.12:3.0.1') \
