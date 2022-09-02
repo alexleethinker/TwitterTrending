@@ -45,6 +45,7 @@ if __name__ == "__main__":
     from pymongo import MongoClient
     try:
         client = MongoClient('mongo', 27017)
+        client.server_info()
     except:
         client = MongoClient('localhost', 27017)
         

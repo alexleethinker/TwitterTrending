@@ -47,23 +47,26 @@ Before cloning the project, make sure you have latest Docker Engine and Docker-C
 
 ### Future improvements
 
-- better controling of running order of python scripts by adding a ```wait-and-run.sh```
-- json error handling (instead of ignoring) for ```twitter-sample.json```
+- better controling of pod staring order
+- investigating POD stateless
 - implementing gunicorn for production-ready api service
-- configuring resource allocations in Spark clusters and among docker containers
+- configuring resource allocations in clusters
 - maturing CI/CD workflows
-- adding scripts and service logs
+- adding service logs
 - HA Spark Cluster with zookeeper
-- immigrating to K8s (POD stateless and pod staring order)
+- 
 - mongodb data persistence
 - mongodb encriptions
 - HA mongodb clusters
 
 - from batch analyis to streaming analysis
-- more data cleaning to support analysis beyond ```text``` field
-- add more api parms like locations, special crowds and languages
 
-
+- adding airflow funtionalities
+- adding machine learning features (SparkML, sklearn, xgboost, h2o.ai)
+- deep learning features (tensorflow, keras, pytorch)
+- hadoop HDFS support
+- argo CD experiment
+- machine learning workflows
 
 
 
